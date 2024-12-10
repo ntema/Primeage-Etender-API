@@ -18,7 +18,7 @@ module.exports.register = async (req, res, next) => {
         error: { message: error.details[0].message },
       });
     }
-    const isUser = await authservices.getuserbyemail({ email: value.email });
+    const isUser = await authservices.getUserByEmail({ email: value.email });
     if (isUser) {
       return res.status(400).json({
         error: { status: "fail", message: "email already exists" },
