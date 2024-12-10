@@ -33,7 +33,7 @@ module.exports.register = async (req, res, next) => {
         },
       });
     }
-    const user = await authservices.registeruser(value);
+    const user = await authservices.registerUser(value);
     if (user) {
       const createWallet = new Wallet({
         walletAmount: value.signupAmount,
