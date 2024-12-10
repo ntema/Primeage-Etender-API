@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   if (error instanceof mongoose.CastError) {
-    res.status(400).json({ message: "Invalid Mongo ID format" });
+    res.status(400).json({ message: "Invalid ID format" });
   }
 });
 
