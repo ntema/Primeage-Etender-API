@@ -8,7 +8,7 @@ const walletSchema = new Schema(
       ref: "User",
     },
     walletAmount: {
-      type: String,
+      type: Number,
       enum:["1500","4000","11000","21000","35000"],
       default: 0,
     },

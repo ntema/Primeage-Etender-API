@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const TransactionSchema = new Schema(
   {
     amount: {
-      type: String,
+      type: Number,
     },
     kind: {
       type: String,
