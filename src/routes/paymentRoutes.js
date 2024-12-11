@@ -1,10 +1,18 @@
 const paymentRouter = require("express").Router();
-const  Transaction  = require("../models/transactionSchema.js");
+const Transaction = require("../models/transactionSchema.js");
+const User = require("../models/userSchema.js");
 const _ = require("lodash");
+const userIsAuthenticated = require("../middlewares/authMiddleware/userIsAuthenticated.js")
 const { initializePayment, verifyPayment } = require("../config/paystack.js")();
 
-
-paymentRouter.post("/transaction/initialize", async (req, res) => {
+paymentRouter.post("/transaction/initialize", userIsAuthenticated, async (req, res) => {
+  const isUser = await User.findById({_id:req.user._id})
+  console.log(isUser)
+  if(!isUser) {
+    return res.status(400).json({
+      message:"Invalid user, please login"
+    })
+  }
   const { body } = req;
   const data = _.pick(body, ["full_name", "amount", "email"]);
   data.amount *= 100;
@@ -20,20 +28,32 @@ paymentRouter.post("/transaction/initialize", async (req, res) => {
   }
 });
 
-paymentRouter.get("/paystack/callback", async (req, res) => {
+paymentRouter.get("/paystack/callback",userIsAuthenticated, async (req, res) => {
   const reference = req.query.reference;
-  console.log("ref_id: ", reference);
   try {
     const response_body = await verifyPayment(reference);
-    console.log("res_body: ", response_body);
-    const data = _.at(response_body.data, [
+    console.log("got here first: ", response_body.data.data.reference);
+    console.log("got here first: ", response_body.data.data.amount);
+    console.log("got here first: ", response_body.data.data.customer.email);
+    console.log("got here first: ", response_body.data.data.metadata.full_name);
+
+    let data = _.at(response_body.data.data, [
       "reference",
       "amount",
       "customer.email",
       "metadata.full_name",
     ]);
-    [reference, amount, email, full_name] = data;
-    newTransact = { referenceID: reference, amount, transaction_by:req.user.id, kind:"deposit" };
+
+    // data = [reference, amount, email, full_name];
+    console.log("got here second: ", data, data[2]);
+
+    newTransact = {
+      referenceID: data[0],
+      amount: data[1],
+      transaction_by: req.user._id,
+      kind: "deposit",
+    };
+
     const transaction = new Transaction(newTransact);
     const transaction_response = await transaction.save();
     if (!transaction_response) {
@@ -43,10 +63,7 @@ paymentRouter.get("/paystack/callback", async (req, res) => {
         },
       });
     } else {
-      if (
-        transaction_response &&
-        transaction_response.status === "success"
-      ) {
+      if (transaction_response && transaction_response.status === "success") {
         console.log("ref_1 ", reference);
         console.log("ref_2 ", transaction_response.referenceID);
         await Wallet.findOneAndUpdate(
@@ -83,4 +100,4 @@ paymentRouter.get("/receipt/:id", async (req, res) => {
   }
 });
 
-module.exports = paymentRouter
+module.exports = paymentRouter;

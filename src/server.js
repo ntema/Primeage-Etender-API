@@ -32,6 +32,7 @@ app.get("/", (req, res) => {
 });
 
 //routes
+
 app.use("/api/v1", require("./routes/index"));
 
 app.use((req, res, next) => {

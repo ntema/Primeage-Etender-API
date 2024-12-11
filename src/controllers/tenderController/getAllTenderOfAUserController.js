@@ -1,13 +1,13 @@
-const Tender = require("../../models/tenderSchema");
-const getAllTenderOfAUser = async (req, res, next) => {
+const AccessedTender = require("../../models/accessedTenderSchema");
+const getAllTenderOfAUserController = async (req, res, next) => {
   try {
+    /*
     let { limit = 1, page = 1 } = req.query;
     page = page || 1;
     const skip = page ? (page - 1) * limit : 0;
-    let option = { appliedBy: req.user._id };
-    console.log(option);
+    let option = { accessedBy: req.user._id };
 
-    const count = await Tender.find(option)
+    const count = await AccessedTender.find({ accessedBy: req.user._id })
       .sort({ updatedAt: -1 })
       .countDocuments();
     // const pages = count>0?Math.ceil(count / limit)?Math.ceil(count / limit): 1;
@@ -30,9 +30,12 @@ const getAllTenderOfAUser = async (req, res, next) => {
       result.previous = { limit, page: page - 1 };
     }
 
-    const Tender = await Tender.find(option)
+    */
+   console.log({ accessedBy: req.user._id });
+    const Tender = await AccessedTender.find({ accessedBy: req.user._id })
       .limit(limit * 1)
-      .populate("tenderUploadedBy")
+      .populate("tender")
+      .populate("accessedBy", "fullName phone email")
       .skip(skip);
     return res
       .status(200)
@@ -41,4 +44,4 @@ const getAllTenderOfAUser = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = getAllTenderOfAUser;
+module.exports = getAllTenderOfAUserController;
