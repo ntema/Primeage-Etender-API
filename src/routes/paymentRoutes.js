@@ -73,7 +73,7 @@ paymentRouter.get(
       const transaction = new Transaction(newTransact);
       const transaction_response = await transaction.save();
       console.log("response1", transaction_response.amount);
-      console.log("response2", transaction_response._id);
+      console.log("response2", transaction_response._id.toString());
 
       const amount = transaction_response.amount / 10;
       console.log("amount", typeof(amount));
@@ -86,7 +86,7 @@ paymentRouter.get(
       console.log("response", wallet);
       res.status(200).json({
         success: { message: response_body.data.data },
-        redirect_url: `https://primeage-etender-api.onrender.com/api/v1/paystack/receipt/${transaction_response._id}`,
+        redirect_url: `https://primeage-etender-api.onrender.com/api/v1/paystack/receipt/${transaction_response._id.toString()}`,
       });
 
       /*
