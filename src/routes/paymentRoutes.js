@@ -19,7 +19,7 @@ paymentRouter.post(
     const { body } = req;
     const data = _.pick(body, ["full_name", "amount", "email"]);
     // data.amount *= 100;
-    data.amount *= 1;
+    data.amount *= 100;
     data.metadata = {
       full_name: data.full_name,
     };
@@ -76,7 +76,7 @@ paymentRouter.get(
       console.log("response1", transaction_response.amount);
       console.log("response2", transaction_response._id.toString());
 
-      const amount = transaction_response.amount / 10;
+      const amount = transaction_response.amount / 100;
       console.log("amount", typeof amount);
 
       const wallet = await Wallet.findOneAndUpdate(
