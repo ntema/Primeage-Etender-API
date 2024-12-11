@@ -2,6 +2,7 @@ const paymentRouter = require("express").Router();
 const Transaction = require("../models/transactionSchema.js");
 const User = require("../models/userSchema.js");
 const _ = require("lodash");
+const Wallet = require("../models/walletSchema.js")
 const userIsAuthenticated = require("../middlewares/authMiddleware/userIsAuthenticated.js");
 const { initializePayment, verifyPayment } = require("../config/paystack.js")();
 
@@ -72,6 +73,17 @@ paymentRouter.get(
       const transaction = new Transaction(newTransact);
       const transaction_response = await transaction.save();
       console.log("response", transaction_response);
+      const amount = transaction_response.amount / 10;
+      const wallet = await Wallet.findOneAndUpdate(
+        { _id: req.user._id },
+        { $inc: { amount: amount } },
+        { new: true }
+      );
+      console.log("response", wallet);
+      res.status(200).json({
+        success: { message: response_body.data.data },
+        redirect_url: `https://node-api-0i99.onrender.com/api/v1/transaction/receipt/${transaction._id}`,
+      });
 
       /*
       if (!transaction_response) {
