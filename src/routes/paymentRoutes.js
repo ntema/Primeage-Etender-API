@@ -2,7 +2,7 @@ const paymentRouter = require("express").Router();
 const Transaction = require("../models/transactionSchema.js");
 const User = require("../models/userSchema.js");
 const _ = require("lodash");
-const Wallet = require("../models/walletSchema.js")
+const {Wallet} = require("../models/walletSchema.js")
 const userIsAuthenticated = require("../middlewares/authMiddleware/userIsAuthenticated.js");
 const { initializePayment, verifyPayment } = require("../config/paystack.js")();
 
@@ -76,7 +76,7 @@ paymentRouter.get(
       const amount = transaction_response.amount / 10;
       const wallet = await Wallet.findOneAndUpdate(
         { _id: req.user._id },
-        { $inc: { amount: amount } },
+        { $inc: { walletAmount: +amount } },
         { new: true }
       );
       console.log("response", wallet);
@@ -122,7 +122,7 @@ paymentRouter.get(
 
 paymentRouter.get("/receipt/:id", async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = req.params._id;
     const transaction = await Transaction.findById({ id });
     if (!transaction) {
       res.status(400).json({ error: { message: "transaction not found" } });
