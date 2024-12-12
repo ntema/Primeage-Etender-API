@@ -29,11 +29,6 @@ const userSchema = new mongoose.Schema(
     terms: {
       type: Boolean,
     },
-    signUpAmount: {
-      type: Number,
-      enum: [1500, 4000, 11000, 21000, 35000],
-      default: 0,
-    },
     order: {
       type: String,
     },

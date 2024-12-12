@@ -11,7 +11,6 @@ uploadRouter.post('/upload',upload.single("image"),(req, res) => {
           message: "Error",
         });
       }
-
       res.status(200).json({
         success: true,
         message: "Uploaded!",

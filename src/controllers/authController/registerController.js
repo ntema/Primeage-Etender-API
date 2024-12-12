@@ -42,7 +42,6 @@ module.exports.register = async (req, res, next) => {
     }
 
     const createWallet = new Wallet({
-      signUpAmount: value.signUpAmount,
       walletAmount: 0,
       owned_by: user._id,
     });

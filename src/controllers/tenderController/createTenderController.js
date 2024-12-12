@@ -26,8 +26,8 @@ const createTenderController = (req, res, next) => {
       const tender = await tenderService.createTender(value);
       if (!tender) {
         return res.status(400).json({
-          status: "tender not created",
-          data: error.message,
+          status: "error",
+          data: { message: "Tender Not Created Successfully" },
         });
       }
       return res.status(200).json({
