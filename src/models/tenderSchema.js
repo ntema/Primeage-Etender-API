@@ -4,6 +4,7 @@ const tenderSchema = new mongoose.Schema(
     tenderCode: {
       type: String,
       required: true,
+      unique:true
     },
     originalMDA: {
       type: String,
@@ -12,11 +13,10 @@ const tenderSchema = new mongoose.Schema(
     tenderTitle: {
       type: String,
       required: true,
-      unique: true,
     },
     status: {
       type: String,
-      enum: ["pending", "out-dated", "on-going"],
+      enum: ["bid-closed", "out-dated", "on-going"],
       default: "on-going",
     },
     fileUpload: {
@@ -25,7 +25,6 @@ const tenderSchema = new mongoose.Schema(
     },
     tenderPrice: {
       type: String,
-      required: true,
     },
     tenderUploadedBy: {
       type: mongoose.Schema.Types.ObjectId,

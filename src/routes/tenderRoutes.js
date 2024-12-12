@@ -6,8 +6,9 @@ const getAllTenderOfAUserController = require("../controllers/tenderController/g
 const userisAuthenticated = require("../middlewares/authMiddleware/userIsAuthenticated")
 const userAccessedTenderController = require('../controllers/tenderController/userAccessedTenderController')
 tenderRoute.post(
-  "/create-tender",userisAuthenticated,
-  upload.single("image"),
+  "/create-tender",
+  userisAuthenticated,
+  upload.single("fileupload"),
   createTenderController
 );
 tenderRoute.post("/user-access-tender",userisAuthenticated, userAccessedTenderController);

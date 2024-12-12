@@ -4,7 +4,7 @@ const Schema = Joi.object({
   tenderCode: Joi.string().required(),
   originalMDA: Joi.string().required(),
   tenderTitle: Joi.string().required(),
-  tenderPrice: Joi.string().required(),
+  tenderPrice: Joi.string().optional(),
   datePosted: Joi.string().required(),
   tenderExpirationDate: Joi.string().required(),
 });
