@@ -1,5 +1,5 @@
 const AccessedTender = require("../../models/accessedTenderSchema");
-const getAllTenderOfAUserController = async (req, res, next) => {
+const getAllViewedTenderOfAUserController = async (req, res, next) => {
   try {
     /*
     let { limit = 1, page = 1 } = req.query;
@@ -31,17 +31,23 @@ const getAllTenderOfAUserController = async (req, res, next) => {
     }
 
     */
-   console.log({ accessedBy: req.user._id });
-    const Tender = await AccessedTender.find({ accessedBy: req.user._id })
-      .limit(limit * 1)
+    const count = await AccessedTender.find({})
+      .sort({ updatedAt: -1 })
+      .countDocuments();
+
+    const limitValue = req.query.limit || 2;
+    const skipValue = req.query.skip || 0;
+
+    const tender = await AccessedTender.find({ accessedBy: req.user._id })
+      .limit(limitValue)
       .populate("tender")
       .populate("accessedBy", "fullName phone email")
-      .skip(skip);
+      .skip(skipValue);
     return res
       .status(200)
-      .json({ status: "success", data: { ...result, count, pages, Tender } });
+      .json({ status: "success", data: { count, page: skipValue, viewedTender: tender } });
   } catch (error) {
     next(error);
   }
 };
-module.exports = getAllTenderOfAUserController;
+module.exports = getAllViewedTenderOfAUserController;

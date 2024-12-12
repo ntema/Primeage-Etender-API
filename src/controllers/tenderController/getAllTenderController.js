@@ -31,7 +31,6 @@ const getAllTenderController = async (req, res, next) => {
     //   result.previous = { limit, page: page - 1 };
     // }
 
-    console.log("got here");
     const count = await Tender.find({})
       .sort({ updatedAt: -1 })
       .countDocuments();

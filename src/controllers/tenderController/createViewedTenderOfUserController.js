@@ -1,6 +1,6 @@
 const userAccessedTenderValidator = require("../../validators/tenderValidator/userAccessedTenderValidator")
 const AccessedTender = require("../../models/accessedTenderSchema") 
-const userAccessedTenderController = async (req, res, next) => {
+const createViewedTenderOfUserController = async (req, res, next) => {
   try {
     const { error, value } = userAccessedTenderValidator.validate(req.body);
     if (error) {
@@ -9,7 +9,9 @@ const userAccessedTenderController = async (req, res, next) => {
       });
     }
     const { _id: accessedBy } = req.user;
+    console.log("accessedby", accessedBy)
     const body = { tender: value.tenderId, accessedBy };
+    console.log(body)
     const accessedTender = await AccessedTender.create(body);
     return res.status(200).json({
       status: "success",
@@ -20,4 +22,4 @@ const userAccessedTenderController = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = userAccessedTenderController
+module.exports = createViewedTenderOfUserController;

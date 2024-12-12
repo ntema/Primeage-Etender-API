@@ -2,20 +2,24 @@ const tenderRoute = require("express").Router();
 const upload = require("../config/multer");
 const createTenderController = require("../controllers/tenderController/createTenderController");
 const getAllTenderController = require("../controllers/tenderController/getAllTenderController");
-const getAllTenderOfAUserController = require("../controllers/tenderController/getAllTenderOfAUserController");
+const getAllViewedTenderOfAUserController = require("../controllers/tenderController/getAllViewedTenderOfAUserController");
 const userisAuthenticated = require("../middlewares/authMiddleware/userIsAuthenticated")
-const userAccessedTenderController = require('../controllers/tenderController/userAccessedTenderController')
+const createViewedTenderOfUserController = require("../controllers/tenderController/createViewedTenderOfUserController");
 tenderRoute.post(
   "/create-tender",
   userisAuthenticated,
   upload.single("fileupload"),
   createTenderController
 );
-tenderRoute.post("/user-access-tender",userisAuthenticated, userAccessedTenderController);
+tenderRoute.post(
+  "/user-viewed-tender",
+  userisAuthenticated,
+  createViewedTenderOfUserController
+);
 tenderRoute.get("/getAllTenders", getAllTenderController);
 tenderRoute.get(
-  "/user-access-tender",
+  "/user-viewed-tender",
   userisAuthenticated,
-  getAllTenderOfAUserController
+  getAllViewedTenderOfAUserController
 );
 module.exports = tenderRoute;
