@@ -1,5 +1,5 @@
 const tenderRoute = require("express").Router();
-const upload = require("../config/multer");
+const {upload} = require("../config/multer");
 const createTenderController = require("../controllers/tenderController/createTenderController");
 const getAllTenderController = require("../controllers/tenderController/getAllTenderController");
 const getAllTenderOfAUserController = require("../controllers/tenderController/getAllTenderOfAUserController");
