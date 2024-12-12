@@ -3,14 +3,18 @@ const Schema = mongoose.Schema;
 
 const walletSchema = new Schema(
   {
+    signUpAmount: {
+      type: Number,
+      enum: [1500, 4000, 11000, 21000, 35000],
+      default:0
+    },
     owned_by: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
     walletAmount: {
       type: Number,
-      enum:["1500","4000","11000","21000","35000"],
-      default: 0,
+      default:0
     },
   },
   {

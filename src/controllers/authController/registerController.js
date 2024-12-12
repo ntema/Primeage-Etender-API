@@ -34,20 +34,36 @@ module.exports.register = async (req, res, next) => {
       });
     }
     const user = await authservices.registerUser(value);
-    if (user) {
-      const createWallet = new Wallet({
-        walletAmount: value.signupAmount,
-        owned_by: user._id,
-      });
-      const newUserWallet = await createWallet.save();
-      const token = jwt.sign({ _id: user._id, role: user.role }, TOKEN_SECRET, {
-        expiresIn: TOKEN_EXPIRATION_TIME,
-      });
-      return res.status(200).json({
-        status: "success",
-        data: { user, newUserWallet, token },
+    if (!user) {
+      return res.status(400).json({
+        status: "error",
+        data: { message: "user registration unsuccessful" },
       });
     }
+
+    const createWallet = new Wallet({
+      signUpAmount: value.signUpAmount,
+      walletAmount: 0,
+      owned_by: user._id,
+    });
+    const newUserWallet = await createWallet.save();
+    if (!newUserWallet) {
+      return res.status(400).json({
+        status: "error",
+        data: {
+          message:
+            ".Registration succesful.But unable to generate wallet during registration. Please contact admin",
+        },
+      });
+    }
+
+    const token = jwt.sign({ _id: user._id, role: user.role }, TOKEN_SECRET, {
+      expiresIn: TOKEN_EXPIRATION_TIME,
+    });
+    return res.status(200).json({
+      status: "success",
+      data: { user, newUserWallet, token },
+    });
   } catch (error) {
     console.log(error);
     next(error);

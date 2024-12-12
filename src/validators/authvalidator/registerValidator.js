@@ -9,7 +9,7 @@ const Schema = Joi.object({
     .regex(/^([+])?(\d+)$/)
     .required(),
   password: Joi.string().required(),
-  signupAmount: Joi.string().required(),
+  signUpAmount: Joi.number().required(),
   terms: Joi.boolean().required(),
 });
 
