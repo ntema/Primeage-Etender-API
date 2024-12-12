@@ -30,8 +30,8 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
     },
     signUpAmount: {
-      type: String,
-      enum: ["1500", "4000", "11000", "21000", "35000"],
+      type: Number,
+      enum: [1500, 4000, 11000, 21000, 35000],
       default: 0,
     },
     order: {
