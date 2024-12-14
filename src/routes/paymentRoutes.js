@@ -17,14 +17,25 @@ paymentRouter.post(
       });
     }
     const { body } = req;
+    let personObject = {
+      full_name: isUser.fullName,
+      email:isUser.email,
+      amount: body.amount
+    }
+
+    /*
     const data = _.pick(body, ["full_name", "amount", "email"]);
-    // data.amount *= 100;
     data.amount *= 100;
     data.metadata = {
       full_name: data.full_name,
     };
+    */
+   personObject.amount *= 100
+   personObject.metadata = {
+    full_name:personObject.full_name
+   }
     try {
-      const response_body = await initializePayment(data);
+      const response_body = await initializePayment(personObject);
       res.status(200).json(response_body.data);
       return res.redirect(response_body.data.authorization_url);
     } catch (error) {
