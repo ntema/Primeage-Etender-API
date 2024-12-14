@@ -9,9 +9,7 @@ const createViewedTenderOfUserController = async (req, res, next) => {
       });
     }
     const { _id: accessedBy } = req.user;
-    console.log("accessedby", accessedBy)
     const body = { tender: value.tenderId, accessedBy };
-    console.log(body)
     const accessedTender = await AccessedTender.create(body);
     return res.status(200).json({
       status: "success",
