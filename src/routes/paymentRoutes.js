@@ -98,10 +98,9 @@ paymentRouter.get(
         { $inc: { walletAmount: amount } },
         { new: true }
       );
-      console.log("response", wallet);
       res.status(200).json({
         success: { message: response_body.data.data },
-        redirect_url: `https://primeage-etender-api.onrender.com/api/v1/paystack/receipt/${transaction_response._id}`,
+        redirect_url: `https://primeage-etender-api.onrender.com/api/v1/paystack/receipt/${transaction_response.referenceID}`,
       });
 
       /*
