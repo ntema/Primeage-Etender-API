@@ -84,14 +84,12 @@ paymentRouter.get(
 
       const transaction = new Transaction(newTransact);
       const transaction_response = await transaction.save();
-      console.log("response2", transaction_response._id.toString());
       console.log("id type1", typeof transaction_response._id.toString());
-      console.log("id type2", typeof transaction_response._id);
+      console.log("transaction_response1", transaction_response)
 
       transaction_response._id = transaction_response._id.toHexString();
 
       const amount = transaction_response.amount / 100;
-      console.log("amount", typeof amount);
 
       const wallet = await Wallet.findOneAndUpdate(
         { _id: req.user._id },
