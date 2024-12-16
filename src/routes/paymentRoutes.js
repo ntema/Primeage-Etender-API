@@ -136,7 +136,7 @@ paymentRouter.get(
   }
 );
 
-paymentRouter.get("/receipt/:id",userIsAuthenticated, async (req, res) => {
+paymentRouter.get("/receipt/",userIsAuthenticated, async (req, res) => {
   try {
     const isUser = await User.findById({ _id: req.user._id });
     if (!isUser) {
@@ -144,7 +144,7 @@ paymentRouter.get("/receipt/:id",userIsAuthenticated, async (req, res) => {
         message: "Invalid user, please login",
       });
     }
-    const id = req.query.id;
+    const id = req.query.reference;
     const transaction = await Transaction.findOne({ referenceID: id });
     if (!transaction) {
       res.status(400).json({ error: { message: "transaction not found" } });
