@@ -75,9 +75,11 @@ paymentRouter.get(
 
       // data = [reference, amount, email, full_name];
 
+      let sanitizeAmount = data[1]/100
+
       newTransact = {
         referenceID: data[0],
-        amount: data[1],
+        amount: sanitizeAmount,
         transaction_by: req.user._id,
         kind: "deposit",
       };
@@ -90,7 +92,6 @@ paymentRouter.get(
       transaction_response._id = transaction_response._id.toHexString();
 
       const amount = transaction_response.amount / 100;
-      console.log("amount", amount)
 
       const wallet = await Wallet.findOneAndUpdate(
         { _id: req.user._id },
@@ -99,7 +100,7 @@ paymentRouter.get(
       );
       res.status(200).json({
         success: { message: response_body.data.data },
-        redirect_url: `https://primeage-etender-api.onrender.com/api/v1/paystack/receipt/${transaction_response.referenceID}`,
+        redirect_url: `https://primeage-etender-api.onrender.com/api/v1/paystack/receipt/`,
       });
 
       /*
