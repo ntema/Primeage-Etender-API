@@ -58,13 +58,6 @@ paymentRouter.get(
     const reference = req.query.reference;
     try {
       const response_body = await verifyPayment(reference);
-      console.log("got here first: ", response_body.data.data.reference);
-      console.log("got here first: ", response_body.data.data.amount);
-      console.log("got here first: ", response_body.data.data.customer.email);
-      console.log(
-        "got here first: ",
-        response_body.data.data.metadata.full_name
-      );
 
       let data = _.at(response_body.data.data, [
         "reference",
@@ -86,8 +79,6 @@ paymentRouter.get(
 
       const transaction = new Transaction(newTransact);
       const transaction_response = await transaction.save();
-      console.log("id type1", typeof transaction_response._id.toString());
-      console.log("transaction_response1", transaction_response)
 
       transaction_response._id = transaction_response._id.toHexString();
 
